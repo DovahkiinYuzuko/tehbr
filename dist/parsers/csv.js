@@ -1,6 +1,7 @@
 import { parse } from 'csv-parse/sync';
 export async function parseCSV(content, options) {
     const records = parse(content, {
+        delimiter: options?.delimiter || ',',
         skip_empty_lines: true,
         relax_column_count: true,
         trim: true,

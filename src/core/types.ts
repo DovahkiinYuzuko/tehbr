@@ -5,13 +5,3 @@ export interface TehbrIR {
   rows: string[][];
   alignments?: (Alignment | null)[];
 }
-
-export type CLIState =
-  | 'Idle'
-  | 'ReadingInput'
-  | 'Parsing'
-  | 'Generating'
-  | 'WritingOutput'
-  | 'Completed'
-  | 'Error'
-  | 'Cancelled';

@@ -2,7 +2,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { Command } from 'commander';
-import { CLIFSM } from '../core/fsm.js';
 import type { TehbrIR } from '../core/types.js';
 import { generateContent } from '../generators/index.js';
 import { initI18n, t } from '../i18n/index.js';
@@ -38,7 +37,7 @@ const EXT_TO_FORMAT_MAP: Record<string, string> = {
   '.json': 'json',
 };
 
-function detectFormatFromPath(filePath: string): string | null {
+export function detectFormatFromPath(filePath: string): string | null {
   const ext = path.extname(filePath).toLowerCase();
   return EXT_TO_FORMAT_MAP[ext] || null;
 }
@@ -65,7 +64,6 @@ import { runStreamPipeline } from '../core/stream.js';
 
 export async function runCLI(args: string[]): Promise<void> {
   const program = new Command();
-  const fsm = new CLIFSM();
 
   // Quick pre-parse for --lang argument before full i18n init
   let requestedLang: string | undefined = undefined;
@@ -129,7 +127,6 @@ export async function runCLI(args: string[]): Promise<void> {
     if (outFormat === 'markdown' || outFormat === 'html') {
       console.warn('Warning: Streaming mode (--stream) does not support markdown/html alignment padding. Falling back to batch mode.');
     } else {
-      fsm.transitionTo('ReadingInput');
       try {
         await runStreamPipeline({
           inputPath,
@@ -140,10 +137,8 @@ export async function runCLI(args: string[]): Promise<void> {
           noHeader: !options.header,
           encoding: options.encoding,
         });
-        fsm.transitionTo('Completed');
         return;
       } catch (err: unknown) {
-        fsm.transitionTo('Error');
         const msg = err instanceof Error ? err.message : String(err);
         console.error(t('cli.err_parse_failed', { msg }));
         process.exit(1);
@@ -151,12 +146,10 @@ export async function runCLI(args: string[]): Promise<void> {
     }
   }
 
-  fsm.transitionTo('ReadingInput');
   let inputContent = '';
 
   if (inputPath) {
     if (!fs.existsSync(inputPath)) {
-      fsm.transitionTo('Error');
       console.error(t('cli.err_input_not_found', { path: inputPath }));
       process.exit(1);
     }
@@ -172,7 +165,6 @@ export async function runCLI(args: string[]): Promise<void> {
         inFormat = detectFormatFromContent(inputContent);
       }
     } catch (err: unknown) {
-      fsm.transitionTo('Error');
       const msg = err instanceof Error ? err.message : String(err);
       console.error(t('cli.err_parse_failed', { msg }));
       process.exit(1);
@@ -185,7 +177,6 @@ export async function runCLI(args: string[]): Promise<void> {
   }
 
   if (!inFormat) {
-    fsm.transitionTo('Error');
     console.error(t('cli.err_detect_input_format'));
     process.exit(1);
   }
@@ -198,39 +189,32 @@ export async function runCLI(args: string[]): Promise<void> {
     outFormat = 'markdown';
   }
 
-  fsm.transitionTo('Parsing');
   let ir: TehbrIR;
   try {
     ir = await parseContent(inFormat, inputContent, { noHeader: !options.header });
   } catch (err: unknown) {
-    fsm.transitionTo('Error');
     const msg = err instanceof Error ? err.message : String(err);
     console.error(t('cli.err_parse_failed', { msg }));
     process.exit(1);
   }
 
-  fsm.transitionTo('Generating');
   let outputText = '';
   try {
     const tableName = options.tableName || (inputPath ? path.basename(inputPath, path.extname(inputPath)) : undefined);
     outputText = generateContent(outFormat, ir, { tableName });
   } catch (err: unknown) {
-    fsm.transitionTo('Error');
     const msg = err instanceof Error ? err.message : String(err);
     console.error(t('cli.err_generate_failed', { msg }));
     process.exit(1);
   }
 
-  fsm.transitionTo('WritingOutput');
   if (options.output) {
     try {
       fs.writeFileSync(options.output, outputText, 'utf8');
       if (options.clip) {
         writeClipboard(outputText);
       }
-      fsm.transitionTo('Completed');
     } catch (err: unknown) {
-      fsm.transitionTo('Error');
       const msg = err instanceof Error ? err.message : String(err);
       console.error(t('cli.err_write_failed', { msg }));
       process.exit(1);
@@ -244,6 +228,6 @@ export async function runCLI(args: string[]): Promise<void> {
       }
     }
     console.log(outputText);
-    fsm.transitionTo('Completed');
   }
 }
+

@@ -68,41 +68,18 @@ export function detectOSLocale(supportedLocales?: Record<string, string>): strin
   const availableCodes = Object.keys(supported);
 
   try {
-    const envLang = process.env.LC_ALL || process.env.LC_MESSAGES || process.env.LANG || process.env.LANGUAGE || '';
-    const intlLang = Intl.DateTimeFormat().resolvedOptions().locale || '';
-    const rawLocale = (envLang || intlLang).trim();
-
+    const rawLocale = (process.env.LC_ALL || process.env.LANG || Intl.DateTimeFormat().resolvedOptions().locale || '').trim();
     if (rawLocale) {
       const cleanRaw = rawLocale.split('.')[0].replace(/_/g, '-').trim();
-
-      // Pass 1: Exact case-insensitive match
-      const exactMatch = availableCodes.find((code) => code.toLowerCase() === cleanRaw.toLowerCase());
-      if (exactMatch) {
-        return exactMatch;
-      }
-
-      // Pass 2: Primary language subtag match (e.g. es-ES -> es, ja-JP -> ja)
-      const primarySubtag = cleanRaw.split('-')[0].toLowerCase();
-      const primaryMatch = availableCodes.find((code) => code.toLowerCase() === primarySubtag);
-      if (primaryMatch) {
-        return primaryMatch;
-      }
-
-      // Pass 3: Chinese script variant matching
-      if (cleanRaw.toLowerCase().includes('hans') || cleanRaw.toLowerCase().includes('cn')) {
-        const cnMatch = availableCodes.find((code) => code.toLowerCase() === 'zh-cn');
-        if (cnMatch) return cnMatch;
-      }
-      if (cleanRaw.toLowerCase().includes('hant') || cleanRaw.toLowerCase().includes('tw') || cleanRaw.toLowerCase().includes('hk')) {
-        const twMatch = availableCodes.find((code) => code.toLowerCase() === 'zh-tw');
-        if (twMatch) return twMatch;
-      }
+      const match = availableCodes.find((code) => code.toLowerCase() === cleanRaw.toLowerCase()) ||
+                    availableCodes.find((code) => code.toLowerCase() === cleanRaw.split('-')[0].toLowerCase());
+      if (match) return match;
     }
   } catch {
     // Ignore detection errors
   }
 
-  return 'en'; // Default fallback
+  return 'en';
 }
 
 export async function initI18n(lang?: string, localesDir?: string): Promise<void> {

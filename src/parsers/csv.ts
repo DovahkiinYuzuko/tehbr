@@ -1,8 +1,12 @@
 import { parse } from 'csv-parse/sync';
 import type { TehbrIR } from '../core/types.js';
 
-export async function parseCSV(content: string, options?: { noHeader?: boolean }): Promise<TehbrIR> {
+export async function parseCSV(
+  content: string,
+  options?: { noHeader?: boolean; delimiter?: string }
+): Promise<TehbrIR> {
   const records: string[][] = parse(content, {
+    delimiter: options?.delimiter || ',',
     skip_empty_lines: true,
     relax_column_count: true,
     trim: true,
@@ -29,3 +33,4 @@ export async function parseCSV(content: string, options?: { noHeader?: boolean }
     rows,
   };
 }
+

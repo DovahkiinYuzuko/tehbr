@@ -5,6 +5,7 @@ import { Command } from 'commander';
 import { CLIFSM } from '../core/fsm.js';
 import type { TehbrIR } from '../core/types.js';
 import { generateContent } from '../generators/index.js';
+import { initI18n, t } from '../i18n/index.js';
 import { parseContent } from '../parsers/index.js';
 import { runInteractiveMode } from './interactive.js';
 
@@ -45,19 +46,20 @@ async function readStdin(): Promise<string> {
 }
 
 export async function runCLI(args: string[]): Promise<void> {
+  await initI18n();
   const program = new Command();
   const fsm = new CLIFSM();
 
   program
     .name('tehbr')
-    .description('Table format conversion CLI tool')
+    .description(t('cli.description'))
     .version('0.1.0')
-    .argument('[input]', 'Input file path')
-    .option('-o, --output <path>', 'Output file path (defaults to stdout)')
-    .option('-f, --input-format <format>', 'Input format (csv, tsv, markdown, html, ir)')
-    .option('-t, --output-format <format>', 'Output format (csv, tsv, markdown, html, ir)')
-    .option('--no-header', 'Treat CSV/TSV 1st row as data instead of header')
-    .option('-i, --interactive', 'Run in interactive mode');
+    .argument('[input]', t('cli.arg_input'))
+    .option('-o, --output <path>', t('cli.opt_output'))
+    .option('-f, --input-format <format>', t('cli.opt_input_format'))
+    .option('-t, --output-format <format>', t('cli.opt_output_format'))
+    .option('--no-header', t('cli.opt_no_header'))
+    .option('-i, --interactive', t('cli.opt_interactive'));
 
   program.parse(args);
 
@@ -81,7 +83,7 @@ export async function runCLI(args: string[]): Promise<void> {
   if (inputPath) {
     if (!fs.existsSync(inputPath)) {
       fsm.transitionTo('Error');
-      console.error(`Error: Input file "${inputPath}" not found.`);
+      console.error(t('cli.err_input_not_found', { path: inputPath }));
       process.exit(1);
     }
     inputContent = fs.readFileSync(inputPath, 'utf8');
@@ -97,7 +99,7 @@ export async function runCLI(args: string[]): Promise<void> {
 
   if (!inFormat) {
     fsm.transitionTo('Error');
-    console.error('Error: Could not detect input format. Please specify --input-format (-f).');
+    console.error(t('cli.err_detect_input_format'));
     process.exit(1);
   }
 
@@ -117,7 +119,7 @@ export async function runCLI(args: string[]): Promise<void> {
   } catch (err: unknown) {
     fsm.transitionTo('Error');
     const msg = err instanceof Error ? err.message : String(err);
-    console.error(`Error during parsing: ${msg}`);
+    console.error(t('cli.err_parse_failed', { msg }));
     process.exit(1);
   }
 
@@ -128,7 +130,7 @@ export async function runCLI(args: string[]): Promise<void> {
   } catch (err: unknown) {
     fsm.transitionTo('Error');
     const msg = err instanceof Error ? err.message : String(err);
-    console.error(`Error during generation: ${msg}`);
+    console.error(t('cli.err_generate_failed', { msg }));
     process.exit(1);
   }
 
@@ -140,7 +142,7 @@ export async function runCLI(args: string[]): Promise<void> {
     } catch (err: unknown) {
       fsm.transitionTo('Error');
       const msg = err instanceof Error ? err.message : String(err);
-      console.error(`Error writing output file: ${msg}`);
+      console.error(t('cli.err_write_failed', { msg }));
       process.exit(1);
     }
   } else {

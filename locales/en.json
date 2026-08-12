@@ -1,0 +1,36 @@
+{
+  "cli": {
+    "description": "Table format conversion CLI tool",
+    "arg_input": "Input file path",
+    "opt_output": "Output file path (defaults to stdout)",
+    "opt_input_format": "Input format (csv, tsv, markdown, html, ir)",
+    "opt_output_format": "Output format (csv, tsv, markdown, html, ir)",
+    "opt_no_header": "Treat CSV/TSV 1st row as data instead of header",
+    "opt_interactive": "Run in interactive mode",
+    "err_input_not_found": "Error: Input file \"{path}\" not found.",
+    "err_detect_input_format": "Error: Could not detect input format. Please specify --input-format (-f).",
+    "err_parse_failed": "Error during parsing: {msg}",
+    "err_generate_failed": "Error during generation: {msg}",
+    "err_write_failed": "Error writing output file: {msg}"
+  },
+  "interactive": {
+    "intro": "tehbr - Table Format Converter",
+    "input_file_prompt": "Enter input file path:",
+    "input_file_req": "Input file path is required.",
+    "file_not_exist": "File does not exist.",
+    "cancelled": "Operation cancelled.",
+    "select_input_format": "Select input format:",
+    "select_output_format": "Select output format:",
+    "parse_failed": "Failed to parse input file: {msg}",
+    "configure_alignment": "Do you want to configure column alignments?",
+    "column_alignment_prompt": "Alignment for column \"{header}\":",
+    "align_unspecified": "Unspecified (null)",
+    "align_left": "Left",
+    "align_center": "Center",
+    "align_right": "Right",
+    "output_file_prompt": "Enter output file path:",
+    "output_file_req": "Output file path is required.",
+    "success_outro": "Successfully converted and saved to {path}",
+    "write_failed": "Failed to write output file: {msg}"
+  }
+}

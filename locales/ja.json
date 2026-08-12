@@ -1,0 +1,36 @@
+{
+  "cli": {
+    "description": "表フォーマット相互変換 CLI ツール",
+    "arg_input": "入力ファイルのパス",
+    "opt_output": "出力ファイルのパス (未指定時は標準出力)",
+    "opt_input_format": "入力フォーマット (csv, tsv, markdown, html, ir)",
+    "opt_output_format": "出力フォーマット (csv, tsv, markdown, html, ir)",
+    "opt_no_header": "CSV/TSVの1行目をヘッダーではなくデータとして扱う",
+    "opt_interactive": "対話型モードで起動する",
+    "err_input_not_found": "エラー: 入力ファイル \"{path}\" が見つかりません。",
+    "err_detect_input_format": "エラー: 入力フォーマットを自動判定できませんでした。--input-format (-f) を指定してください。",
+    "err_parse_failed": "パース中にエラーが発生しました: {msg}",
+    "err_generate_failed": "生成中にエラーが発生しました: {msg}",
+    "err_write_failed": "出力ファイルの書き込み中にエラーが発生しました: {msg}"
+  },
+  "interactive": {
+    "intro": "tehbr - 表フォーマットコンバーター",
+    "input_file_prompt": "入力ファイルのパスを入力してください:",
+    "input_file_req": "入力ファイルのパスは必須です。",
+    "file_not_exist": "ファイルが存在しません。",
+    "cancelled": "操作がキャンセルされました。",
+    "select_input_format": "入力フォーマットを選択してください:",
+    "select_output_format": "出力フォーマットを選択してください:",
+    "parse_failed": "入力ファイルのパースに失敗しました: {msg}",
+    "configure_alignment": "列の文字揃え（アライメント）を設定しますか？",
+    "column_alignment_prompt": "列 \"{header}\" のアライメント:",
+    "align_unspecified": "指定なし (null)",
+    "align_left": "左揃え (Left)",
+    "align_center": "中央揃え (Center)",
+    "align_right": "右揃え (Right)",
+    "output_file_prompt": "出力ファイルの保存先パスを入力してください:",
+    "output_file_req": "出力ファイルの保存先パスは必須です。",
+    "success_outro": "正常に変換され {path} へ保存されました",
+    "write_failed": "出力ファイルの書き込みに失敗しました: {msg}"
+  }
+}

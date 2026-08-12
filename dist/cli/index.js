@@ -58,6 +58,7 @@ async function readStdin() {
         });
     });
 }
+import { runStreamPipeline } from '../core/stream.js';
 export async function runCLI(args) {
     await initI18n();
     const program = new Command();
@@ -72,6 +73,7 @@ export async function runCLI(args) {
         .option('-t, --output-format <format>', t('cli.opt_output_format'))
         .option('-tbl, --table-name <name>', t('cli.opt_table_name'))
         .option('-c, --clip', t('cli.opt_clip'))
+        .option('--stream', t('cli.opt_stream'))
         .option('--no-header', t('cli.opt_no_header'))
         .option('-i, --interactive', t('cli.opt_interactive'));
     program.parse(args);
@@ -85,9 +87,36 @@ export async function runCLI(args) {
         program.help();
         return;
     }
+    let inFormat = options.inputFormat || (inputPath ? detectFormatFromPath(inputPath) : null);
+    let outFormat = options.outputFormat || (options.output ? detectFormatFromPath(options.output) : null);
+    if (options.stream) {
+        if (outFormat === 'markdown' || outFormat === 'html') {
+            console.warn('Warning: Streaming mode (--stream) does not support markdown/html alignment padding. Falling back to batch mode.');
+        }
+        else {
+            fsm.transitionTo('ReadingInput');
+            try {
+                await runStreamPipeline({
+                    inputPath,
+                    outputPath: options.output,
+                    inputFormat: inFormat || 'csv',
+                    outputFormat: outFormat || 'markdown',
+                    tableName: options.tableName,
+                    noHeader: !options.header,
+                });
+                fsm.transitionTo('Completed');
+                return;
+            }
+            catch (err) {
+                fsm.transitionTo('Error');
+                const msg = err instanceof Error ? err.message : String(err);
+                console.error(t('cli.err_parse_failed', { msg }));
+                process.exit(1);
+            }
+        }
+    }
     fsm.transitionTo('ReadingInput');
     let inputContent = '';
-    let inFormat = options.inputFormat;
     if (inputPath) {
         if (!fs.existsSync(inputPath)) {
             fsm.transitionTo('Error');
@@ -125,7 +154,6 @@ export async function runCLI(args) {
         console.error(t('cli.err_detect_input_format'));
         process.exit(1);
     }
-    let outFormat = options.outputFormat;
     if (!outFormat && options.output) {
         outFormat = detectFormatFromPath(options.output);
     }

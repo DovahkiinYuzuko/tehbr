@@ -2,29 +2,32 @@
 *
 !.gitignore
 # ---AUTO-Generated---
-# .gitignores/dist.gitignore
-!dist/
-!dist/**
+# .gitignores/docs.gitignore
+!docs/
+!docs/tag-index.md
+!docs/variables'n'functions/
+!docs/variables'n'functions/**
+# .gitignores/github.gitignore
+!.github/
+!.github/workflows/
+!.github/workflows/**
 # .gitignores/locales.gitignore
 !locales/
 !locales/**
+# .gitignores/meta.gitignore
+!.gitignores/
+!.gitignores/**
 # .gitignores/src.gitignore
 !src/
-!src/index.ts
-!src/cli/
-!src/cli/**
-!src/core/
-!src/core/**
-!src/generators/
-!src/generators/**
-!src/parsers/
-!src/parsers/**
-!src/i18n/
-!src/i18n/**
+!src/**
 # .gitignores/tehbr.gitignore
 !README.md
 !NOTICE.md
-!LICENSE.*
+!LICENSE
 
 !package*.json
 !tsconfig.json
+# .gitignores/test.gitignore
+!test-scripts/
+!test-scripts/**
+test-scripts/logs/

@@ -1,0 +1,3 @@
+!test-scripts/
+!test-scripts/**
+test-scripts/logs/

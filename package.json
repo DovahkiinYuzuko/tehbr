@@ -11,8 +11,16 @@
     "build": "tsc",
     "dev": "node bin/tehbr.js",
     "start": "node bin/tehbr.js",
-    "test": "tsx test-scripts/test_runner.ts"
+    "test": "tsx test-scripts/test_runner.ts",
+    "prepare": "npm run build"
   },
+  "files": [
+    "bin",
+    "dist",
+    "locales",
+    "LICENSE",
+    "README.md"
+  ],
   "keywords": [],
   "author": "Yuzuko Underson",
   "license": "MIT",

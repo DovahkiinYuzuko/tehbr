@@ -1,25 +1,26 @@
 import { parseCSV } from './csv.js';
 import { parseHTML } from './html.js';
+import { parseJSON } from './json.js';
 import { parseMarkdown } from './markdown.js';
 import { parseTSV } from './tsv.js';
-import { parseJSON } from './json.js';
+const FORMAT_ALIASES = {
+    md: 'markdown',
+    htm: 'html',
+};
+const PARSER_REGISTRY = {
+    csv: parseCSV,
+    tsv: parseTSV,
+    markdown: parseMarkdown,
+    html: parseHTML,
+    json: parseJSON,
+    ir: (content) => JSON.parse(content),
+};
 export async function parseContent(format, content, options) {
     const normalizedFormat = format.toLowerCase().trim();
-    switch (normalizedFormat) {
-        case 'csv':
-            return parseCSV(content, options);
-        case 'tsv':
-            return parseTSV(content, options);
-        case 'markdown':
-        case 'md':
-            return parseMarkdown(content);
-        case 'html':
-            return parseHTML(content);
-        case 'json':
-            return parseJSON(content);
-        case 'ir':
-            return JSON.parse(content);
-        default:
-            throw new Error(`Unsupported input format: ${format}`);
+    const canonicalFormat = FORMAT_ALIASES[normalizedFormat] || normalizedFormat;
+    const parser = PARSER_REGISTRY[canonicalFormat];
+    if (!parser) {
+        throw new Error(`Unsupported input format: ${format}`);
     }
+    return parser(content, options);
 }

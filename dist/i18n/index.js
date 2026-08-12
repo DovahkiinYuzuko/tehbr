@@ -59,31 +59,37 @@ export function getSupportedLocales(localesDir) {
     }
     return result;
 }
-export function detectOSLocale() {
+export function detectOSLocale(supportedLocales) {
+    const supported = supportedLocales ?? getSupportedLocales();
+    const availableCodes = Object.keys(supported);
     try {
         const envLang = process.env.LC_ALL || process.env.LC_MESSAGES || process.env.LANG || process.env.LANGUAGE || '';
         const intlLang = Intl.DateTimeFormat().resolvedOptions().locale || '';
-        const rawLocale = (envLang || intlLang).toLowerCase();
-        if (rawLocale.includes('zh-cn') || rawLocale.includes('zh_cn') || rawLocale.includes('zh-hans')) {
-            return 'zh-CN';
-        }
-        if (rawLocale.includes('zh-tw') || rawLocale.includes('zh_tw') || rawLocale.includes('zh-hant') || rawLocale.includes('zh-hk')) {
-            return 'zh-TW';
-        }
-        if (rawLocale.startsWith('ja')) {
-            return 'ja';
-        }
-        if (rawLocale.startsWith('es')) {
-            return 'es';
-        }
-        if (rawLocale.startsWith('de')) {
-            return 'de';
-        }
-        if (rawLocale.startsWith('fr')) {
-            return 'fr';
-        }
-        if (rawLocale.startsWith('ko')) {
-            return 'ko';
+        const rawLocale = (envLang || intlLang).trim();
+        if (rawLocale) {
+            const cleanRaw = rawLocale.split('.')[0].replace(/_/g, '-').trim();
+            // Pass 1: Exact case-insensitive match
+            const exactMatch = availableCodes.find((code) => code.toLowerCase() === cleanRaw.toLowerCase());
+            if (exactMatch) {
+                return exactMatch;
+            }
+            // Pass 2: Primary language subtag match (e.g. es-ES -> es, ja-JP -> ja)
+            const primarySubtag = cleanRaw.split('-')[0].toLowerCase();
+            const primaryMatch = availableCodes.find((code) => code.toLowerCase() === primarySubtag);
+            if (primaryMatch) {
+                return primaryMatch;
+            }
+            // Pass 3: Chinese script variant matching
+            if (cleanRaw.toLowerCase().includes('hans') || cleanRaw.toLowerCase().includes('cn')) {
+                const cnMatch = availableCodes.find((code) => code.toLowerCase() === 'zh-cn');
+                if (cnMatch)
+                    return cnMatch;
+            }
+            if (cleanRaw.toLowerCase().includes('hant') || cleanRaw.toLowerCase().includes('tw') || cleanRaw.toLowerCase().includes('hk')) {
+                const twMatch = availableCodes.find((code) => code.toLowerCase() === 'zh-tw');
+                if (twMatch)
+                    return twMatch;
+            }
         }
     }
     catch {
@@ -96,14 +102,14 @@ export async function initI18n(lang, localesDir) {
     const supportedLocales = getSupportedLocales(baseLocalesDir);
     let targetLang = lang;
     if (targetLang) {
-        const normalized = targetLang.trim();
-        const matchKey = Object.keys(supportedLocales).find((k) => k.toLowerCase() === normalized.toLowerCase());
+        const normalized = targetLang.trim().toLowerCase();
+        const matchKey = Object.keys(supportedLocales).find((k) => k.toLowerCase() === normalized);
         if (matchKey) {
             targetLang = matchKey;
         }
     }
     if (!targetLang) {
-        targetLang = detectOSLocale();
+        targetLang = detectOSLocale(supportedLocales);
     }
     if (!(targetLang in supportedLocales)) {
         targetLang = 'en';

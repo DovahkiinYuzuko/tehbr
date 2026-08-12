@@ -24,24 +24,18 @@ function detectFormatFromContent(content) {
     }
     return 'csv';
 }
+const EXT_TO_FORMAT_MAP = {
+    '.csv': 'csv',
+    '.tsv': 'tsv',
+    '.md': 'markdown',
+    '.markdown': 'markdown',
+    '.html': 'html',
+    '.htm': 'html',
+    '.json': 'json',
+};
 function detectFormatFromPath(filePath) {
     const ext = path.extname(filePath).toLowerCase();
-    switch (ext) {
-        case '.csv':
-            return 'csv';
-        case '.tsv':
-            return 'tsv';
-        case '.md':
-        case '.markdown':
-            return 'markdown';
-        case '.html':
-        case '.htm':
-            return 'html';
-        case '.json':
-            return 'json';
-        default:
-            return null;
-    }
+    return EXT_TO_FORMAT_MAP[ext] || null;
 }
 async function readStdin() {
     return new Promise((resolve, reject) => {

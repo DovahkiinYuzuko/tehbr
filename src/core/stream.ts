@@ -5,6 +5,8 @@ import { Transform } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { parse as parseCSVStream } from 'csv-parse';
 
+import iconv from 'iconv-lite';
+
 export interface StreamOptions {
   inputPath?: string;
   outputPath?: string;
@@ -12,6 +14,7 @@ export interface StreamOptions {
   outputFormat: string;
   tableName?: string;
   noHeader?: boolean;
+  encoding?: string;
 }
 
 function escapeCSVCell(cell: string): string {
@@ -37,9 +40,13 @@ function escapeSQLValue(val: string): string {
 }
 
 export async function runStreamPipeline(options: StreamOptions): Promise<void> {
-  const readable: NodeJS.ReadableStream = options.inputPath
-    ? fs.createReadStream(options.inputPath, { encoding: 'utf8' })
+  const rawReadable: NodeJS.ReadableStream = options.inputPath
+    ? fs.createReadStream(options.inputPath)
     : process.stdin;
+
+  const readable: NodeJS.ReadableStream = options.encoding
+    ? rawReadable.pipe(iconv.decodeStream(options.encoding))
+    : rawReadable;
 
   const writable: NodeJS.WritableStream = options.outputPath
     ? fs.createWriteStream(options.outputPath, { encoding: 'utf8' })

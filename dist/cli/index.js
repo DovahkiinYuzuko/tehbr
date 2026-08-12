@@ -58,6 +58,7 @@ async function readStdin() {
         });
     });
 }
+import { decodeBuffer } from '../utils/encoding.js';
 import { runStreamPipeline } from '../core/stream.js';
 export async function runCLI(args) {
     await initI18n();
@@ -72,6 +73,7 @@ export async function runCLI(args) {
         .option('-f, --input-format <format>', t('cli.opt_input_format'))
         .option('-t, --output-format <format>', t('cli.opt_output_format'))
         .option('-tbl, --table-name <name>', t('cli.opt_table_name'))
+        .option('-e, --encoding <name>', t('cli.opt_encoding'))
         .option('-c, --clip', t('cli.opt_clip'))
         .option('--stream', t('cli.opt_stream'))
         .option('--no-header', t('cli.opt_no_header'))
@@ -103,6 +105,7 @@ export async function runCLI(args) {
                     outputFormat: outFormat || 'markdown',
                     tableName: options.tableName,
                     noHeader: !options.header,
+                    encoding: options.encoding,
                 });
                 fsm.transitionTo('Completed');
                 return;
@@ -123,7 +126,8 @@ export async function runCLI(args) {
             console.error(t('cli.err_input_not_found', { path: inputPath }));
             process.exit(1);
         }
-        inputContent = fs.readFileSync(inputPath, 'utf8');
+        const rawBuffer = fs.readFileSync(inputPath);
+        inputContent = decodeBuffer(rawBuffer, options.encoding);
         if (!inFormat) {
             inFormat = detectFormatFromPath(inputPath);
         }

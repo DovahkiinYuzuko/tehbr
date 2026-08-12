@@ -4,6 +4,7 @@ import process from 'node:process';
 import { Transform } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { parse as parseCSVStream } from 'csv-parse';
+import iconv from 'iconv-lite';
 function escapeCSVCell(cell) {
     if (cell.includes(',') || cell.includes('"') || cell.includes('\n') || cell.includes('\r')) {
         return `"${cell.replace(/"/g, '""')}"`;
@@ -23,9 +24,12 @@ function escapeSQLValue(val) {
     return `'${val.replace(/'/g, "''")}'`;
 }
 export async function runStreamPipeline(options) {
-    const readable = options.inputPath
-        ? fs.createReadStream(options.inputPath, { encoding: 'utf8' })
+    const rawReadable = options.inputPath
+        ? fs.createReadStream(options.inputPath)
         : process.stdin;
+    const readable = options.encoding
+        ? rawReadable.pipe(iconv.decodeStream(options.encoding))
+        : rawReadable;
     const writable = options.outputPath
         ? fs.createWriteStream(options.outputPath, { encoding: 'utf8' })
         : process.stdout;

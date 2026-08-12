@@ -23,6 +23,10 @@
     "NOTICE.md"
   ],
   "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DovahkiinYuzuko/tehbr.git"
+  },
   "author": "Yuzuko Underson",
   "license": "MIT",
   "dependencies": {

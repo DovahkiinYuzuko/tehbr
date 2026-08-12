@@ -5,6 +5,8 @@
 # .gitignores/src.gitignore
 !src/
 !src/index.ts
+!src/cli/
+!src/cli/**
 !src/core/
 !src/core/**
 !src/generators/

@@ -9,6 +9,25 @@ import { initI18n, t } from '../i18n/index.js';
 import { parseContent } from '../parsers/index.js';
 import { runInteractiveMode } from './interactive.js';
 
+import { readClipboard, writeClipboard } from '../utils/clipboard.js';
+
+function detectFormatFromContent(content: string): string {
+  const trimmed = content.trim();
+  if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+    return 'json';
+  }
+  if (trimmed.toLowerCase().includes('<table')) {
+    return 'html';
+  }
+  if (trimmed.includes('\t')) {
+    return 'tsv';
+  }
+  if (trimmed.includes('|')) {
+    return 'markdown';
+  }
+  return 'csv';
+}
+
 function detectFormatFromPath(filePath: string): string | null {
   const ext = path.extname(filePath).toLowerCase();
   switch (ext) {
@@ -23,7 +42,7 @@ function detectFormatFromPath(filePath: string): string | null {
     case '.htm':
       return 'html';
     case '.json':
-      return 'ir';
+      return 'json';
     default:
       return null;
   }
@@ -59,6 +78,7 @@ export async function runCLI(args: string[]): Promise<void> {
     .option('-f, --input-format <format>', t('cli.opt_input_format'))
     .option('-t, --output-format <format>', t('cli.opt_output_format'))
     .option('-tbl, --table-name <name>', t('cli.opt_table_name'))
+    .option('-c, --clip', t('cli.opt_clip'))
     .option('--no-header', t('cli.opt_no_header'))
     .option('-i, --interactive', t('cli.opt_interactive'));
 
@@ -72,7 +92,7 @@ export async function runCLI(args: string[]): Promise<void> {
     return;
   }
 
-  if (!inputPath && process.stdin.isTTY) {
+  if (!inputPath && !options.clip && process.stdin.isTTY) {
     program.help();
     return;
   }
@@ -90,6 +110,18 @@ export async function runCLI(args: string[]): Promise<void> {
     inputContent = fs.readFileSync(inputPath, 'utf8');
     if (!inFormat) {
       inFormat = detectFormatFromPath(inputPath);
+    }
+  } else if (options.clip) {
+    try {
+      inputContent = readClipboard();
+      if (!inFormat) {
+        inFormat = detectFormatFromContent(inputContent);
+      }
+    } catch (err: unknown) {
+      fsm.transitionTo('Error');
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error(t('cli.err_parse_failed', { msg }));
+      process.exit(1);
     }
   } else if (!process.stdin.isTTY) {
     inputContent = await readStdin();
@@ -140,6 +172,9 @@ export async function runCLI(args: string[]): Promise<void> {
   if (options.output) {
     try {
       fs.writeFileSync(options.output, outputText, 'utf8');
+      if (options.clip) {
+        writeClipboard(outputText);
+      }
       fsm.transitionTo('Completed');
     } catch (err: unknown) {
       fsm.transitionTo('Error');
@@ -148,6 +183,13 @@ export async function runCLI(args: string[]): Promise<void> {
       process.exit(1);
     }
   } else {
+    if (options.clip) {
+      try {
+        writeClipboard(outputText);
+      } catch (err: unknown) {
+        console.error('Warning: Failed to write to clipboard:', err instanceof Error ? err.message : String(err));
+      }
+    }
     console.log(outputText);
     fsm.transitionTo('Completed');
   }

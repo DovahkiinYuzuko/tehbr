@@ -8,6 +8,7 @@
     "opt_table_name": "Table name for SQL output (defaults to filename or table_name)",
     "opt_no_header": "Treat CSV/TSV 1st row as data instead of header",
     "opt_interactive": "Run in interactive mode",
+    "opt_clip": "Read from and/or write to OS clipboard",
     "err_input_not_found": "Error: Input file \"{path}\" not found.",
     "err_detect_input_format": "Error: Could not detect input format. Please specify --input-format (-f).",
     "err_parse_failed": "Error during parsing: {msg}",

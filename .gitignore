@@ -16,9 +16,6 @@
 # .gitignores/locales.gitignore
 !locales/
 !locales/**
-# .gitignores/meta.gitignore
-!.gitignores/
-!.gitignores/**
 # .gitignores/src.gitignore
 !src/
 !src/**

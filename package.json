@@ -1,6 +1,6 @@
 {
   "name": "@yuzuko_underson/tehbr",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Table format conversion CLI tool",
   "type": "module",
   "main": "dist/index.js",
@@ -19,7 +19,8 @@
     "dist",
     "locales",
     "LICENSE.MIT",
-    "README.md"
+    "README.md",
+    "NOTICE.md"
   ],
   "keywords": [],
   "author": "Yuzuko Underson",

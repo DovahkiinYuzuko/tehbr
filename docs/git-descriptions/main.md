@@ -11,6 +11,32 @@ tags:
 Describe the purpose of this branch here.
 --- START GIT LOG ---
 
+### `8ceb48f`
+- **Date:** 2026-08-13 05:27:20
+- **Commit Message:** [docs] サードパーティオープンソース通知ファイル (NOTICE.md) の作成
+- **Constraint:** サードパーティ著作権・ライセンス通知フォーマットの準拠
+- **Rejected:** NOTICE.mdの未作成および著作権情報の欠落
+- **Chosen:** 役割別カテゴリ分類に従ったNOTICE.mdの生成と登録
+
+### `f77a2a3`
+- **Date:** 2026-08-13 05:21:42
+- **Commit Message:** [docs] update git branch log descriptions
+- **Description:** None
+
+### `506d7f2`
+- **Date:** 2026-08-13 05:20:06
+- **Commit Message:** [feat] CI環境およびビルド・ドキュメントGit構成の整備
+- **Constraint:** npm install時の自動コンパイル保証とリポジトリの清潔性の維持
+- **Rejected:** dist/のGit直接管理およびテストログ・ビルド用設定の追跡漏れ
+- **Chosen:** gitignoreホワイトリスト再構成、package.jsonへのprepare/files設定の追加、GitHub Actions CIワークフローの構築
+
+### `d8a8326`
+- **Date:** 2026-08-13 05:07:19
+- **Commit Message:** [refactor] 不要なFSMの削除およびコード重複の解消
+- **Constraint:** シンプルな変換CLIにおける保守性と可読性の最大化
+- **Rejected:** 空のFSMクラスの維持およびパーサー・ジェネレーター・フォーマット検出の個別実装
+- **Chosen:** FSMクラスの全廃、デリミタ引数化によるパーサー/ジェネレーター統合、拡張子判定関数の共通化
+
 ### `5c26082`
 - **Date:** 2026-08-13 04:45:08
 - **Commit Message:** [refactor] 完全動的レジストリ・ゼロハードコードOS言語照合アーキテクチャの完成

@@ -1,5 +1,5 @@
 {
-  "name": "tehbr",
+  "name": "@yuzuko_underson/tehbr",
   "version": "0.1.0",
   "description": "Table format conversion CLI tool",
   "type": "module",

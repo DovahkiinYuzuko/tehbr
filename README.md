@@ -43,7 +43,7 @@ flowchart LR
 ### インストール方法
 ```bash
 # npm からグローバルインストール
-npm install -g tehbr
+npm install -g @yuzuko_underson/tehbr
 
 # または GitHub から直接インストール
 npm install -g DovahkiinYuzuko/tehbr
@@ -131,7 +131,7 @@ flowchart LR
 ### Installation
 ```bash
 # Global installation from npm
-npm install -g tehbr
+npm install -g @yuzuko_underson/tehbr
 
 # Or install directly from GitHub
 npm install -g DovahkiinYuzuko/tehbr

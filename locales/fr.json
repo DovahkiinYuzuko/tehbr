@@ -1,4 +1,9 @@
 {
+  "meta": {
+    "code": "fr",
+    "name": "French",
+    "native_name": "Français"
+  },
   "cli": {
     "description": "Outil CLI de conversion de format de tableau",
     "arg_input": "Chemin du fichier d'entrée",

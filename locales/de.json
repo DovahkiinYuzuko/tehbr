@@ -1,4 +1,9 @@
 {
+  "meta": {
+    "code": "de",
+    "name": "German",
+    "native_name": "Deutsch"
+  },
   "cli": {
     "description": "Tabellenformat-Konvertierungs-CLI-Werkzeug",
     "arg_input": "Eingabedateipfad",

@@ -1,4 +1,9 @@
 {
+  "meta": {
+    "code": "ko",
+    "name": "Korean",
+    "native_name": "한국어"
+  },
   "cli": {
     "description": "표 형식 변환 CLI 도구",
     "arg_input": "입력 파일 경로",

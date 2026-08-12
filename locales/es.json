@@ -1,4 +1,9 @@
 {
+  "meta": {
+    "code": "es",
+    "name": "Spanish",
+    "native_name": "Español"
+  },
   "cli": {
     "description": "Herramienta CLI de conversión de formatos de tabla",
     "arg_input": "Ruta del archivo de entrada",

@@ -1,4 +1,9 @@
 {
+  "meta": {
+    "code": "ja",
+    "name": "Japanese",
+    "native_name": "日本語"
+  },
   "cli": {
     "description": "表フォーマット相互変換 CLI ツール",
     "arg_input": "入力ファイルのパス",

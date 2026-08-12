@@ -1,4 +1,9 @@
 {
+  "meta": {
+    "code": "zh-CN",
+    "name": "Chinese Simplified",
+    "native_name": "简体中文"
+  },
   "cli": {
     "description": "表格格式转换 CLI 工具",
     "arg_input": "输入文件路径",

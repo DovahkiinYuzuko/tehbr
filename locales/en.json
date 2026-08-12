@@ -1,4 +1,9 @@
 {
+  "meta": {
+    "code": "en",
+    "name": "English",
+    "native_name": "English"
+  },
   "cli": {
     "description": "Table format conversion CLI tool",
     "arg_input": "Input file path",

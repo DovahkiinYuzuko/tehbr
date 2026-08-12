@@ -1,4 +1,9 @@
 {
+  "meta": {
+    "code": "zh-TW",
+    "name": "Chinese Traditional",
+    "native_name": "繁體中文"
+  },
   "cli": {
     "description": "表格格式轉換 CLI 工具",
     "arg_input": "輸入檔案路徑",

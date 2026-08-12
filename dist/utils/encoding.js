@@ -1,6 +1,9 @@
 import iconv from 'iconv-lite';
 export function decodeBuffer(buffer, encoding) {
     if (encoding) {
+        if (!iconv.encodingExists(encoding)) {
+            throw new Error(`Unsupported or invalid encoding name: "${encoding}".`);
+        }
         return iconv.decode(buffer, encoding);
     }
     // BOM Detection

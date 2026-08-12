@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*.*.*'
 
+permissions:
+  contents: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -24,8 +27,13 @@ jobs:
       - name: Build TypeScript project
         run: npm run build
 
+      - name: Install Linux clipboard utilities (xclip & xvfb)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xclip xvfb
+
       - name: Run test suite
-        run: npm test
+        run: xvfb-run npm test
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

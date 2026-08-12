@@ -2,6 +2,7 @@ import { parseCSV } from './csv.js';
 import { parseHTML } from './html.js';
 import { parseMarkdown } from './markdown.js';
 import { parseTSV } from './tsv.js';
+import { parseJSON } from './json.js';
 export async function parseContent(format, content, options) {
     const normalizedFormat = format.toLowerCase().trim();
     switch (normalizedFormat) {
@@ -14,8 +15,9 @@ export async function parseContent(format, content, options) {
             return parseMarkdown(content);
         case 'html':
             return parseHTML(content);
-        case 'ir':
         case 'json':
+            return parseJSON(content);
+        case 'ir':
             return JSON.parse(content);
         default:
             throw new Error(`Unsupported input format: ${format}`);

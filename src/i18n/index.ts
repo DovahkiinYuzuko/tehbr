@@ -8,7 +8,7 @@ export async function initI18n(lang: string = 'en', localesDir?: string): Promis
   currentLanguage = lang;
   const targetDir = localesDir ?? path.resolve(process.cwd(), 'locales');
   loader = new RokeeruLoader(targetDir, 'en');
-  await loader.load();
+  loader.load('en');
 }
 
 export function t(key: string, params?: Record<string, string>): string {
@@ -16,7 +16,12 @@ export function t(key: string, params?: Record<string, string>): string {
     return key;
   }
 
-  const localeObj = (loader.get(currentLanguage) ?? loader.get('en')) as Record<string, unknown> | undefined;
+  let localeObj: Record<string, unknown> | undefined;
+  try {
+    localeObj = (loader.load(currentLanguage) ?? loader.load('en')) as Record<string, unknown>;
+  } catch {
+    localeObj = undefined;
+  }
   if (!localeObj) {
     return key;
   }

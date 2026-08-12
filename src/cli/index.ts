@@ -58,6 +58,7 @@ export async function runCLI(args: string[]): Promise<void> {
     .option('-o, --output <path>', t('cli.opt_output'))
     .option('-f, --input-format <format>', t('cli.opt_input_format'))
     .option('-t, --output-format <format>', t('cli.opt_output_format'))
+    .option('-tbl, --table-name <name>', t('cli.opt_table_name'))
     .option('--no-header', t('cli.opt_no_header'))
     .option('-i, --interactive', t('cli.opt_interactive'));
 
@@ -126,7 +127,8 @@ export async function runCLI(args: string[]): Promise<void> {
   fsm.transitionTo('Generating');
   let outputText = '';
   try {
-    outputText = generateContent(outFormat, ir);
+    const tableName = options.tableName || (inputPath ? path.basename(inputPath, path.extname(inputPath)) : undefined);
+    outputText = generateContent(outFormat, ir, { tableName });
   } catch (err: unknown) {
     fsm.transitionTo('Error');
     const msg = err instanceof Error ? err.message : String(err);

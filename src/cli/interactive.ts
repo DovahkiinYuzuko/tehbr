@@ -21,7 +21,7 @@ function detectFormatFromExtension(filePath: string): string | null {
     case '.htm':
       return 'html';
     case '.json':
-      return 'ir';
+      return 'json';
     default:
       return null;
   }
@@ -58,6 +58,7 @@ export async function runInteractiveMode(): Promise<void> {
         { value: 'tsv', label: 'TSV' },
         { value: 'markdown', label: 'Markdown' },
         { value: 'html', label: 'HTML' },
+        { value: 'json', label: 'JSON (Objects)' },
         { value: 'ir', label: 'JSON (tehbr IR)' },
       ],
     });
@@ -78,6 +79,8 @@ export async function runInteractiveMode(): Promise<void> {
       { value: 'html', label: 'HTML' },
       { value: 'csv', label: 'CSV' },
       { value: 'tsv', label: 'TSV' },
+      { value: 'json', label: 'JSON (Objects)' },
+      { value: 'sql', label: 'SQL (CREATE/INSERT)' },
       { value: 'ir', label: 'JSON (tehbr IR)' },
     ],
   });
@@ -86,6 +89,23 @@ export async function runInteractiveMode(): Promise<void> {
     fsm.cancel();
     p.cancel(t('interactive.cancelled'));
     return;
+  }
+
+  let tableName: string | undefined;
+  if (outputFormat === 'sql') {
+    const defaultTableName = path.basename(inputFilePath, path.extname(inputFilePath)) || 'table_name';
+    const tableNameInput = await p.text({
+      message: t('interactive.table_name_prompt'),
+      placeholder: defaultTableName,
+      initialValue: defaultTableName,
+    });
+
+    if (p.isCancel(tableNameInput)) {
+      fsm.cancel();
+      p.cancel(t('interactive.cancelled'));
+      return;
+    }
+    tableName = tableNameInput || defaultTableName;
   }
 
   fsm.transitionTo('Parsing');
@@ -155,7 +175,7 @@ export async function runInteractiveMode(): Promise<void> {
   }
 
   try {
-    const generated = generateContent(outputFormat as string, ir);
+    const generated = generateContent(outputFormat as string, ir, { tableName });
     fs.writeFileSync(outputFilePath, generated, 'utf8');
     fsm.transitionTo('Completed');
     p.outro(t('interactive.success_outro', { path: outputFilePath }));

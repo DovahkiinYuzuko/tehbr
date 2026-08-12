@@ -3,6 +3,7 @@ import path from 'node:path';
 import * as p from '@clack/prompts';
 import { CLIFSM } from '../core/fsm.js';
 import { generateContent } from '../generators/index.js';
+import { initI18n, t } from '../i18n/index.js';
 import { parseContent } from '../parsers/index.js';
 function detectFormatFromExtension(filePath) {
     const ext = path.extname(filePath).toLowerCase();
@@ -18,65 +19,84 @@ function detectFormatFromExtension(filePath) {
         case '.htm':
             return 'html';
         case '.json':
-            return 'ir';
+            return 'json';
         default:
             return null;
     }
 }
 export async function runInteractiveMode() {
+    await initI18n();
     const fsm = new CLIFSM();
-    p.intro('tehbr - Table Format Converter');
+    p.intro(t('interactive.intro'));
     fsm.transitionTo('ReadingInput');
     const inputFilePath = await p.text({
-        message: 'Enter input file path:',
+        message: t('interactive.input_file_prompt'),
         placeholder: 'input.csv',
         validate(value) {
             if (!value)
-                return 'Input file path is required.';
+                return t('interactive.input_file_req');
             if (!fs.existsSync(value))
-                return 'File does not exist.';
+                return t('interactive.file_not_exist');
             return undefined;
         },
     });
     if (p.isCancel(inputFilePath)) {
         fsm.cancel();
-        p.cancel('Operation cancelled.');
+        p.cancel(t('interactive.cancelled'));
         return;
     }
     let inputFormat = detectFormatFromExtension(inputFilePath);
     if (!inputFormat) {
         const selectedInputFormat = await p.select({
-            message: 'Select input format:',
+            message: t('interactive.select_input_format'),
             options: [
                 { value: 'csv', label: 'CSV' },
                 { value: 'tsv', label: 'TSV' },
                 { value: 'markdown', label: 'Markdown' },
                 { value: 'html', label: 'HTML' },
+                { value: 'json', label: 'JSON (Objects)' },
                 { value: 'ir', label: 'JSON (tehbr IR)' },
             ],
         });
         if (p.isCancel(selectedInputFormat)) {
             fsm.cancel();
-            p.cancel('Operation cancelled.');
+            p.cancel(t('interactive.cancelled'));
             return;
         }
         inputFormat = selectedInputFormat;
     }
     fsm.transitionTo('Generating');
     const outputFormat = await p.select({
-        message: 'Select output format:',
+        message: t('interactive.select_output_format'),
         options: [
             { value: 'markdown', label: 'Markdown' },
             { value: 'html', label: 'HTML' },
             { value: 'csv', label: 'CSV' },
             { value: 'tsv', label: 'TSV' },
+            { value: 'json', label: 'JSON (Objects)' },
+            { value: 'sql', label: 'SQL (CREATE/INSERT)' },
             { value: 'ir', label: 'JSON (tehbr IR)' },
         ],
     });
     if (p.isCancel(outputFormat)) {
         fsm.cancel();
-        p.cancel('Operation cancelled.');
+        p.cancel(t('interactive.cancelled'));
         return;
+    }
+    let tableName;
+    if (outputFormat === 'sql') {
+        const defaultTableName = path.basename(inputFilePath, path.extname(inputFilePath)) || 'table_name';
+        const tableNameInput = await p.text({
+            message: t('interactive.table_name_prompt'),
+            placeholder: defaultTableName,
+            initialValue: defaultTableName,
+        });
+        if (p.isCancel(tableNameInput)) {
+            fsm.cancel();
+            p.cancel(t('interactive.cancelled'));
+            return;
+        }
+        tableName = tableNameInput || defaultTableName;
     }
     fsm.transitionTo('Parsing');
     const inputContent = fs.readFileSync(inputFilePath, 'utf8');
@@ -87,35 +107,35 @@ export async function runInteractiveMode() {
     catch (err) {
         fsm.transitionTo('Error');
         const msg = err instanceof Error ? err.message : String(err);
-        p.cancel(`Failed to parse input file: ${msg}`);
+        p.cancel(t('interactive.parse_failed', { msg }));
         return;
     }
     const supportsAlignment = outputFormat === 'markdown' || outputFormat === 'html';
     if (supportsAlignment && ir.headers.length > 0) {
         const configureAlignment = await p.confirm({
-            message: 'Do you want to configure column alignments?',
+            message: t('interactive.configure_alignment'),
             initialValue: false,
         });
         if (p.isCancel(configureAlignment)) {
             fsm.cancel();
-            p.cancel('Operation cancelled.');
+            p.cancel(t('interactive.cancelled'));
             return;
         }
         if (configureAlignment) {
             const alignments = [];
             for (const header of ir.headers) {
                 const align = await p.select({
-                    message: `Alignment for column "${header}":`,
+                    message: t('interactive.column_alignment_prompt', { header }),
                     options: [
-                        { value: 'null', label: 'Unspecified (null)' },
-                        { value: 'left', label: 'Left' },
-                        { value: 'center', label: 'Center' },
-                        { value: 'right', label: 'Right' },
+                        { value: 'null', label: t('interactive.align_unspecified') },
+                        { value: 'left', label: t('interactive.align_left') },
+                        { value: 'center', label: t('interactive.align_center') },
+                        { value: 'right', label: t('interactive.align_right') },
                     ],
                 });
                 if (p.isCancel(align)) {
                     fsm.cancel();
-                    p.cancel('Operation cancelled.');
+                    p.cancel(t('interactive.cancelled'));
                     return;
                 }
                 alignments.push(align === 'null' ? null : align);
@@ -125,28 +145,28 @@ export async function runInteractiveMode() {
     }
     fsm.transitionTo('WritingOutput');
     const outputFilePath = await p.text({
-        message: 'Enter output file path:',
+        message: t('interactive.output_file_prompt'),
         placeholder: 'output.md',
         validate(value) {
             if (!value)
-                return 'Output file path is required.';
+                return t('interactive.output_file_req');
             return undefined;
         },
     });
     if (p.isCancel(outputFilePath)) {
         fsm.cancel();
-        p.cancel('Operation cancelled.');
+        p.cancel(t('interactive.cancelled'));
         return;
     }
     try {
-        const generated = generateContent(outputFormat, ir);
+        const generated = generateContent(outputFormat, ir, { tableName });
         fs.writeFileSync(outputFilePath, generated, 'utf8');
         fsm.transitionTo('Completed');
-        p.outro(`Successfully converted and saved to ${outputFilePath}`);
+        p.outro(t('interactive.success_outro', { path: outputFilePath }));
     }
     catch (err) {
         fsm.transitionTo('Error');
         const msg = err instanceof Error ? err.message : String(err);
-        p.cancel(`Failed to write output file: ${msg}`);
+        p.cancel(t('interactive.write_failed', { msg }));
     }
 }

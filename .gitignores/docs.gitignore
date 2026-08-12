@@ -1,4 +1,6 @@
 !docs/
 !docs/tag-index.md
+!docs/git-descriptions/
+!docs/git-descriptions/**
 !docs/variables'n'functions/
 !docs/variables'n'functions/**

@@ -1,0 +1,30 @@
+{
+  "name": "tehbr",
+  "version": "0.1.0",
+  "description": "Table format conversion CLI tool",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "tehbr": "bin/tehbr.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "node bin/tehbr.js",
+    "start": "node bin/tehbr.js",
+    "test": "tsx test-scripts/test_runner.ts"
+  },
+  "keywords": [],
+  "author": "Yuzuko Underson",
+  "license": "MIT",
+  "dependencies": {
+    "@clack/prompts": "^1.7.0",
+    "commander": "^15.0.0",
+    "csv-parse": "^7.0.2",
+    "string-width": "^8.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  }
+}

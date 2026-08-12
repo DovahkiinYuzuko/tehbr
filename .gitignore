@@ -1,0 +1,20 @@
+# project:tehbr
+*
+!.gitignore
+# ---AUTO-Generated---
+# .gitignores/src.gitignore
+!src/
+!src/index.ts
+!src/core/
+!src/core/**
+!src/generators/
+!src/generators/**
+!src/parsers/
+!src/parsers/**
+# .gitignores/tehbr.gitignore
+!README.md
+!NOTICE.md
+!LICENSE.*
+
+!package*.json
+!tsconfig.json

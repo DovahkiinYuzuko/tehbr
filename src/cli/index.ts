@@ -64,13 +64,27 @@ async function readStdin(): Promise<string> {
   });
 }
 
+import { getSupportedLocales } from '../i18n/index.js';
 import { decodeBuffer } from '../utils/encoding.js';
 import { runStreamPipeline } from '../core/stream.js';
 
 export async function runCLI(args: string[]): Promise<void> {
-  await initI18n();
   const program = new Command();
   const fsm = new CLIFSM();
+
+  // Quick pre-parse for --lang argument before full i18n init
+  let requestedLang: string | undefined = undefined;
+  for (let i = 0; i < args.length; i++) {
+    if ((args[i] === '--lang' || args[i] === '-l') && args[i + 1]) {
+      requestedLang = args[i + 1];
+      break;
+    } else if (args[i].startsWith('--lang=')) {
+      requestedLang = args[i].split('=')[1];
+      break;
+    }
+  }
+
+  await initI18n(requestedLang);
 
   program
     .name('tehbr')
@@ -84,6 +98,8 @@ export async function runCLI(args: string[]): Promise<void> {
     .option('-e, --encoding <name>', t('cli.opt_encoding'))
     .option('-c, --clip', t('cli.opt_clip'))
     .option('--stream', t('cli.opt_stream'))
+    .option('--lang <locale>', t('cli.opt_lang'))
+    .option('--list-locales', t('cli.opt_list_locales'))
     .option('--no-header', t('cli.opt_no_header'))
     .option('-i, --interactive', t('cli.opt_interactive'));
 
@@ -91,6 +107,15 @@ export async function runCLI(args: string[]): Promise<void> {
 
   const options = program.opts();
   const inputPath = program.args[0];
+
+  if (options.listLocales) {
+    console.log('Supported UI Languages / Locales:');
+    const locales = getSupportedLocales();
+    for (const [code, name] of Object.entries(locales)) {
+      console.log(`  ${code.padEnd(8)} ${name}`);
+    }
+    return;
+  }
 
   if (options.interactive) {
     await runInteractiveMode();

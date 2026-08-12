@@ -1,0 +1,43 @@
+{
+  "cli": {
+    "description": "표 형식 변환 CLI 도구",
+    "arg_input": "입력 파일 경로",
+    "opt_output": "출력 파일 경로 (기본값 표준 출력)",
+    "opt_input_format": "입력 형식 (csv, tsv, markdown, html, json, ir)",
+    "opt_output_format": "출력 형식 (csv, tsv, markdown, html, json, sql, ir)",
+    "opt_table_name": "SQL 출력용 테이블 이름 (기본값 파일명 또는 table_name)",
+    "opt_no_header": "CSV/TSV 첫 번째 행을 헤더가 아닌 데이터로 처리",
+    "opt_interactive": "대화형 모드로 실행",
+    "opt_clip": "OS 클립보드에서 읽기 및/또는 쓰기",
+    "opt_stream": "대용량 파일용 스트리밍 변환 모드 활성화",
+    "opt_encoding": "입력 파일 문자 인코딩 (예: shift_jis, gbk, euc-kr, windows-1252, utf-16)",
+    "opt_lang": "UI 언어/로캘 설정 (예: en, ja, zh-CN, zh-TW, es, de, fr, ko)",
+    "opt_list_locales": "지원되는 UI 언어/로캘 목록 표시",
+    "err_input_not_found": "오류: 입력 파일 \"{path}\"를 찾을 수 없습니다.",
+    "err_detect_input_format": "오류: 입력 형식을 자동으로 감지할 수 없습니다. --input-format (-f)을 지정하세요.",
+    "err_parse_failed": "구문 분석 중 오류 발생: {msg}",
+    "err_generate_failed": "생성 중 오류 발생: {msg}",
+    "err_write_failed": "출력 파일 쓰기 오류: {msg}"
+  },
+  "interactive": {
+    "intro": "tehbr - 표 형식 변환기",
+    "input_file_prompt": "입력 파일 경로를 입력하세요:",
+    "input_file_req": "입력 파일 경로는 필수입니다.",
+    "file_not_exist": "파일이 존재하지 않습니다.",
+    "cancelled": "작업이 취소되었습니다.",
+    "select_input_format": "입력 형식을 선택하세요:",
+    "select_output_format": "출력 형식을 선택하세요:",
+    "table_name_prompt": "SQL 테이블 이름을 입력하세요:",
+    "parse_failed": "입력 파일 구문 분석 실패: {msg}",
+    "configure_alignment": "열 정렬을 설정하시겠습니까?",
+    "column_alignment_prompt": "\"{header}\" 열 정렬:",
+    "align_unspecified": "지정 안 함 (null)",
+    "align_left": "왼쪽 정렬",
+    "align_center": "가운데 정렬",
+    "align_right": "오른쪽 정렬",
+    "output_file_prompt": "출력 파일 저장 경로를 입력하세요:",
+    "output_file_req": "출력 파일 저장 경로는 필수입니다.",
+    "success_outro": "성공적으로 변환되어 {path}에 저장되었습니다",
+    "write_failed": "출력 파일 쓰기 실패: {msg}"
+  }
+}

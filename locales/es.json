@@ -1,0 +1,43 @@
+{
+  "cli": {
+    "description": "Herramienta CLI de conversión de formatos de tabla",
+    "arg_input": "Ruta del archivo de entrada",
+    "opt_output": "Ruta del archivo de salida (por defecto stdout)",
+    "opt_input_format": "Formato de entrada (csv, tsv, markdown, html, json, ir)",
+    "opt_output_format": "Formato de salida (csv, tsv, markdown, html, json, sql, ir)",
+    "opt_table_name": "Nombre de la tabla para salida SQL (por defecto nombre de archivo o table_name)",
+    "opt_no_header": "Tratar la 1ª fila de CSV/TSV como datos en lugar de encabezado",
+    "opt_interactive": "Ejecutar en modo interactivo",
+    "opt_clip": "Leer o escribir en el portapapeles del sistema operativo",
+    "opt_stream": "Habilitar modo de conversión por transmisión para archivos grandes",
+    "opt_encoding": "Codificación del archivo de entrada (ej. shift_jis, gbk, euc-kr, windows-1252, utf-16)",
+    "opt_lang": "Establecer idioma/configuración regional (ej. en, ja, zh-CN, zh-TW, es, de, fr, ko)",
+    "opt_list_locales": "Listar idiomas/configuraciones regionales compatibles",
+    "err_input_not_found": "Error: Archivo de entrada \"{path}\" no encontrado.",
+    "err_detect_input_format": "Error: No se pudo detectar el formato de entrada. Especifique --input-format (-f).",
+    "err_parse_failed": "Error durante el análisis: {msg}",
+    "err_generate_failed": "Error durante la generación: {msg}",
+    "err_write_failed": "Error al escribir el archivo de salida: {msg}"
+  },
+  "interactive": {
+    "intro": "tehbr - Convertidor de Formatos de Tabla",
+    "input_file_prompt": "Ingrese la ruta del archivo de entrada:",
+    "input_file_req": "La ruta del archivo de entrada es requerida.",
+    "file_not_exist": "El archivo no existe.",
+    "cancelled": "Operación cancelada.",
+    "select_input_format": "Seleccione el formato de entrada:",
+    "select_output_format": "Seleccione el formato de salida:",
+    "table_name_prompt": "Ingrese el nombre de la tabla SQL:",
+    "parse_failed": "Error al analizar el archivo de entrada: {msg}",
+    "configure_alignment": "¿Desea configurar la alineación de las columnas?",
+    "column_alignment_prompt": "Alineación para la columna \"{header}\":",
+    "align_unspecified": "No especificado (null)",
+    "align_left": "Izquierda",
+    "align_center": "Centro",
+    "align_right": "Derecha",
+    "output_file_prompt": "Ingrese la ruta del archivo de salida:",
+    "output_file_req": "La ruta del archivo de salida es requerida.",
+    "success_outro": "Convertido y guardado exitosamente en {path}",
+    "write_failed": "Error al escribir el archivo de salida: {msg}"
+  }
+}

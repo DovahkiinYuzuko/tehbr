@@ -11,6 +11,8 @@
     "opt_clip": "クリップボードから読み込みおよび/または書き込み",
     "opt_stream": "大容量ファイル向けのストリーミング変換モードを有効化",
     "opt_encoding": "入力ファイルのエンコーディング指定 (例: shift_jis, gbk, euc-kr, windows-1252, utf-16)",
+    "opt_lang": "UI言語/ロケールの設定 (例: en, ja, zh-CN, zh-TW, es, de, fr, ko)",
+    "opt_list_locales": "サポートされている表示言語/ロケールの一覧を表示",
     "err_input_not_found": "エラー: 入力ファイル \"{path}\" が見つかりません。",
     "err_detect_input_format": "エラー: 入力フォーマットを自動判定できませんでした。--input-format (-f) を指定してください。",
     "err_parse_failed": "パース中にエラーが発生しました: {msg}",

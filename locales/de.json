@@ -1,0 +1,43 @@
+{
+  "cli": {
+    "description": "Tabellenformat-Konvertierungs-CLI-Werkzeug",
+    "arg_input": "Eingabedateipfad",
+    "opt_output": "Ausgabedateipfad (Standardmäßig stdout)",
+    "opt_input_format": "Eingabeformat (csv, tsv, markdown, html, json, ir)",
+    "opt_output_format": "Ausgabeformat (csv, tsv, markdown, html, json, sql, ir)",
+    "opt_table_name": "Tabellenname für SQL-Ausgabe (Standardmäßig Dateiname oder table_name)",
+    "opt_no_header": "Erste Zeile von CSV/TSV als Daten statt Kopfzeile behandeln",
+    "opt_interactive": "Im interaktiven Modus ausführen",
+    "opt_clip": "Aus der Zwischenablage lesen oder hineinschreiben",
+    "opt_stream": "Streaming-Konvertierungsmodus für große Dateien aktivieren",
+    "opt_encoding": "Zeichenkodierung der Eingabedatei (z.B. shift_jis, gbk, euc-kr, windows-1252, utf-16)",
+    "opt_lang": "Sprache/Gebietsschema festlegen (z.B. en, ja, zh-CN, zh-TW, es, de, fr, ko)",
+    "opt_list_locales": "Unterstützte Sprachen/Gebietsschemata auflisten",
+    "err_input_not_found": "Fehler: Eingabedatei \"{path}\" nicht gefunden.",
+    "err_detect_input_format": "Fehler: Eingabeformat konnte nicht erkannt werden. Bitte --input-format (-f) angeben.",
+    "err_parse_failed": "Fehler beim Parsen: {msg}",
+    "err_generate_failed": "Fehler bei der Generierung: {msg}",
+    "err_write_failed": "Fehler beim Schreiben der Ausgabedatei: {msg}"
+  },
+  "interactive": {
+    "intro": "tehbr - Tabellenformat-Konverter",
+    "input_file_prompt": "Geben Sie den Eingabedateipfad ein:",
+    "input_file_req": "Eingabedateipfad ist erforderlich.",
+    "file_not_exist": "Datei existiert nicht.",
+    "cancelled": "Vorgang abgebrochen.",
+    "select_input_format": "Wählen Sie das Eingabeformat:",
+    "select_output_format": "Wählen Sie das Ausgabeformat:",
+    "table_name_prompt": "Geben Sie den SQL-Tabellennamen ein:",
+    "parse_failed": "Eingabedatei konnte nicht geparst werden: {msg}",
+    "configure_alignment": "Möchten Sie die Spaltenausrichtung konfigurieren?",
+    "column_alignment_prompt": "Ausrichtung für Spalte \"{header}\":",
+    "align_unspecified": "Nicht angegeben (null)",
+    "align_left": "Links",
+    "align_center": "Zentriert",
+    "align_right": "Rechts",
+    "output_file_prompt": "Geben Sie den Ausgabedateipfad ein:",
+    "output_file_req": "Ausgabedateipfad ist erforderlich.",
+    "success_outro": "Erfolgreich konvertiert und gespeichert unter {path}",
+    "write_failed": "Fehler beim Schreiben der Ausgabedatei: {msg}"
+  }
+}

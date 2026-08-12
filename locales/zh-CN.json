@@ -1,0 +1,43 @@
+{
+  "cli": {
+    "description": "表格格式转换 CLI 工具",
+    "arg_input": "输入文件路径",
+    "opt_output": "输出文件路径（默认输出到标准输出）",
+    "opt_input_format": "输入格式 (csv, tsv, markdown, html, json, ir)",
+    "opt_output_format": "输出格式 (csv, tsv, markdown, html, json, sql, ir)",
+    "opt_table_name": "SQL 输出的表名（默认为文件名或 table_name）",
+    "opt_no_header": "将 CSV/TSV 第一行视为数据行而非表头",
+    "opt_interactive": "以交互模式运行",
+    "opt_clip": "从/向系统剪贴板读取或写入数据",
+    "opt_stream": "启用大文件流式转换模式",
+    "opt_encoding": "输入文件字符编码 (例如: shift_jis, gbk, euc-kr, windows-1252, utf-16)",
+    "opt_lang": "设置 UI 语言/区域 (例如: en, ja, zh-CN, zh-TW, es, de, fr, ko)",
+    "opt_list_locales": "列出支持的 UI 语言/区域",
+    "err_input_not_found": "错误: 未找到输入文件 \"{path}\"。",
+    "err_detect_input_format": "错误: 无法自动检测输入格式。请指定 --input-format (-f)。",
+    "err_parse_failed": "解析过程中出错: {msg}",
+    "err_generate_failed": "生成过程中出错: {msg}",
+    "err_write_failed": "写入输出文件时出错: {msg}"
+  },
+  "interactive": {
+    "intro": "tehbr - 表格格式转换器",
+    "input_file_prompt": "请输入输入文件路径:",
+    "input_file_req": "必须提供输入文件路径。",
+    "file_not_exist": "文件不存在。",
+    "cancelled": "操作已取消。",
+    "select_input_format": "请选择输入格式:",
+    "select_output_format": "请选择输出格式:",
+    "table_name_prompt": "请输入 SQL 表名:",
+    "parse_failed": "解析输入文件失败: {msg}",
+    "configure_alignment": "是否配置列对齐方式？",
+    "column_alignment_prompt": "列 \"{header}\" 的对齐方式:",
+    "align_unspecified": "未指定 (null)",
+    "align_left": "左对齐 (Left)",
+    "align_center": "居中对齐 (Center)",
+    "align_right": "右对齐 (Right)",
+    "output_file_prompt": "请输入输出文件保存路径:",
+    "output_file_req": "必须提供输出文件保存路径。",
+    "success_outro": "成功转换并保存至 {path}",
+    "write_failed": "写入输出文件失败: {msg}"
+  }
+}

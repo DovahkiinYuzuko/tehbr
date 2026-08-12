@@ -1,0 +1,43 @@
+{
+  "cli": {
+    "description": "表格格式轉換 CLI 工具",
+    "arg_input": "輸入檔案路徑",
+    "opt_output": "輸出檔案路徑（預設輸出至標準輸出）",
+    "opt_input_format": "輸入格式 (csv, tsv, markdown, html, json, ir)",
+    "opt_output_format": "輸出格式 (csv, tsv, markdown, html, json, sql, ir)",
+    "opt_table_name": "SQL 輸出的資料表名稱（預設為檔案名稱或 table_name）",
+    "opt_no_header": "將 CSV/TSV 第一行視為資料行而非標題列",
+    "opt_interactive": "以互動模式執行",
+    "opt_clip": "從/向系統剪貼簿讀取或寫入資料",
+    "opt_stream": "啟用大檔案串流轉換模式",
+    "opt_encoding": "輸入檔案字元編碼 (例如: shift_jis, gbk, euc-kr, windows-1252, utf-16)",
+    "opt_lang": "設定 UI 語言/區域 (例如: en, ja, zh-CN, zh-TW, es, de, fr, ko)",
+    "opt_list_locales": "列出支援的 UI 語言/區域",
+    "err_input_not_found": "錯誤: 找不到輸入檔案 \"{path}\"。",
+    "err_detect_input_format": "錯誤: 無法自動偵測輸入格式。請指定 --input-format (-f)。",
+    "err_parse_failed": "解析過程中發生錯誤: {msg}",
+    "err_generate_failed": "產生過程中發生錯誤: {msg}",
+    "err_write_failed": "寫入輸出檔案時發生錯誤: {msg}"
+  },
+  "interactive": {
+    "intro": "tehbr - 表格格式轉換器",
+    "input_file_prompt": "請輸入輸入檔案路徑:",
+    "input_file_req": "必須提供輸入檔案路徑。",
+    "file_not_exist": "檔案不存在。",
+    "cancelled": "操作已取消。",
+    "select_input_format": "請選擇輸入格式:",
+    "select_output_format": "請選擇輸出格式:",
+    "table_name_prompt": "請輸入 SQL 資料表名稱:",
+    "parse_failed": "解析輸入檔案失敗: {msg}",
+    "configure_alignment": "是否設定欄位對齊方式？",
+    "column_alignment_prompt": "欄位 \"{header}\" 的對齊方式:",
+    "align_unspecified": "未指定 (null)",
+    "align_left": "靠左對齊 (Left)",
+    "align_center": "置中對齊 (Center)",
+    "align_right": "靠右對齊 (Right)",
+    "output_file_prompt": "請輸入輸出檔案儲存路徑:",
+    "output_file_req": "必須提供輸出檔案儲存路徑。",
+    "success_outro": "成功轉換並儲存至 {path}",
+    "write_failed": "寫入輸出檔案失敗: {msg}"
+  }
+}

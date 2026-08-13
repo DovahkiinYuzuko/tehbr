@@ -7,24 +7,25 @@ export function readClipboard() {
             const result = execSync('powershell -NoProfile -Command "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; Get-Clipboard"', {
                 encoding: 'utf8',
                 windowsHide: true,
+                timeout: 2000,
             });
             return result.trimEnd();
         }
         else if (platform === 'darwin') {
-            const result = execSync('pbpaste', { encoding: 'utf8' });
+            const result = execSync('pbpaste', { encoding: 'utf8', timeout: 2000 });
             return result.trimEnd();
         }
         else {
             // Linux / Unix
             try {
-                return execSync('xclip -selection clipboard -o', { encoding: 'utf8' }).trimEnd();
+                return execSync('xclip -selection clipboard -o', { encoding: 'utf8', timeout: 2000 }).trimEnd();
             }
             catch {
                 try {
-                    return execSync('xsel --clipboard --output', { encoding: 'utf8' }).trimEnd();
+                    return execSync('xsel --clipboard --output', { encoding: 'utf8', timeout: 2000 }).trimEnd();
                 }
                 catch {
-                    return execSync('wl-paste', { encoding: 'utf8' }).trimEnd();
+                    return execSync('wl-paste', { encoding: 'utf8', timeout: 2000 }).trimEnd();
                 }
             }
         }
@@ -42,22 +43,27 @@ export function writeClipboard(text) {
                 input: text,
                 encoding: 'utf8',
                 windowsHide: true,
+                timeout: 2000,
             });
         }
         else if (platform === 'darwin') {
             spawnSync('pbcopy', [], {
                 input: text,
                 encoding: 'utf8',
+                timeout: 2000,
             });
         }
         else {
             // Linux / Unix
-            let res = spawnSync('xclip', ['-selection', 'clipboard'], { input: text, encoding: 'utf8' });
-            if (res.error) {
-                res = spawnSync('xsel', ['--clipboard', '--input'], { input: text, encoding: 'utf8' });
+            let res = spawnSync('xclip', ['-selection', 'clipboard'], { input: text, encoding: 'utf8', timeout: 2000 });
+            if (res.error || res.status !== 0) {
+                res = spawnSync('xsel', ['--clipboard', '--input'], { input: text, encoding: 'utf8', timeout: 2000 });
+            }
+            if (res.error || res.status !== 0) {
+                res = spawnSync('wl-copy', [], { input: text, encoding: 'utf8', timeout: 2000 });
             }
             if (res.error) {
-                spawnSync('wl-copy', [], { input: text, encoding: 'utf8' });
+                throw res.error;
             }
         }
     }

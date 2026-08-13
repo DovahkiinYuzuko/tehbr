@@ -11,6 +11,81 @@ tags:
 Describe the purpose of this branch here.
 --- START GIT LOG ---
 
+### `54d47d2`
+- **Date:** 2026-08-13 07:36:08
+- **Commit Message:** [fix] npm Provenance改ざん検証パスのためpackage.jsonにrepository情報を追加
+- **Constraint:** npm Trusted PublishingにおけるProvenance(Sigstore検証署名)の必須メタデータ定義
+- **Rejected:** repository.url欠落による422 Unprocessable Entityエラーの発生
+- **Chosen:** package.jsonへのrepository定義追加によるProvenance検証の完全成功
+
+### `9dbb7f8`
+- **Date:** 2026-08-13 07:34:51
+- **Commit Message:** [fix] npm Trusted Publishing(OIDC)完全準拠のためNode 22.xおよびnpm@latest更新ステップを適用
+- **Constraint:** npm Trusted Publishing要件(Node 22.14.0+およびnpm 11.5.1+)の遵守
+- **Rejected:** 古いnpm CLIバージョンにおけるOIDC自動認証未対応およびENEEDAUTHエラーの発生
+- **Chosen:** Node.js 22.x指定・registry-url設定・npm@latest導入によるOIDC自動公開の実現
+
+### `1520d59`
+- **Date:** 2026-08-13 07:33:09
+- **Commit Message:** [fix] OIDC Trusted Publishingにおける.npmrc干渉回避のためsetup-nodeのregistry-url設定を削除
+- **Constraint:** Trusted Publishing (OIDC)における環境変数干渉の排除および自動認証フローの完全動作
+- **Rejected:** setup-nodeのregistry-url記述による空トークン.npmrc生成および404認証エラーの発生
+- **Chosen:** setup-nodeからのregistry-url削除および標準npm publishコマンドの適用
+
+### `c6e8ac0`
+- **Date:** 2026-08-13 07:29:13
+- **Commit Message:** [fix] Linux headless環境におけるxclipの永久ハング防止ガードの追加
+- **Constraint:** execSync/spawnSyncにおけるtimeoutおよび終了ステータスチェックの必須化
+- **Rejected:** timeout指定のないxclip呼び出しによるheadless Linux/xvfb環境での無限フリーズ
+- **Chosen:** timeout: 2000msの追加およびstatus != 0時のフォールバック処理の実装
+
+### `6fc7d9d`
+- **Date:** 2026-08-13 07:20:59
+- **Commit Message:** [fix] CIハング防止のためテストランナー(test_runner.ts)成功時にprocess.exit(0)を明示呼び出し
+- **Constraint:** ヘッドレスLinux CI環境における非同期ハンドルの残留によるプロセスハングの防止
+- **Rejected:** 成功時にprocess.exit(0)を省略することによる無限待機・CIタイムアウトの発生
+- **Chosen:** runTestsの末尾にてprocess.exit(0)を明示的に呼び出しテストプロセスを確実に終了
+
+### `1548d82`
+- **Date:** 2026-08-13 06:38:02
+- **Commit Message:** [feat] v0.1.1 パッケージ更新とTrusted Publishing自動リリースワークフローの適用
+- **Constraint:** npmパッケージ配布物へのNOTICE.mdライセンスファイルの同梱およびOIDC認証許可の記述
+- **Rejected:** NOTICE.mdの欠落およびTrusted Publishing時のid-tokenパーミッション未設定による認証失敗
+- **Chosen:** package.jsonへのNOTICE.md定義追加・バージョン0.1.1更新およびrelease.ymlのid-token:write設定適用
+
+### `b0df65a`
+- **Date:** 2026-08-13 06:30:38
+- **Commit Message:** [fix] npmパッケージ名をスコープ付き@yuzuko_underson/tehbrに変更
+- **Constraint:** npmレジストリにおける既存パッケージ名(tebs)との類似重複回避ルールの遵守
+- **Rejected:** 単独名tehbrの使用による403 Forbiddenパブリッシュエラーの発生
+- **Chosen:** @yuzuko_underson/tehbrへのパッケージ名変更およびREADMEドキュメントの同期
+
+### `10abcd7`
+- **Date:** 2026-08-13 06:12:53
+- **Commit Message:** [chore] .gitignoreの最適化およびテストランナー仕様書の行数更新
+- **Constraint:** .gitignoreフラグメント整理の適用および最新実装コードと仕様書ドキュメント行数の完全整合
+- **Rejected:** 一時ファイルや未整理フラグメントの残留および仕様書行数の乖離
+- **Chosen:** .gitignoreの統合記述と仕様書(test_runner.md)の行数範囲同期
+
+### `2552057`
+- **Date:** 2026-08-13 06:00:12
+- **Commit Message:** [fix] CIマトリックスからNode.js 18.xを除外し20.x/22.xに統一
+- **Constraint:** string-width@8依存におけるRegExp /vフラグ(Unicode Sets)のNode 20+動作要件遵守
+- **Rejected:** Node.js 18.xにおけるV8構文エラー SyntaxError: Invalid regular expression flags
+- **Chosen:** CIマトリックスの対象バージョンを[20.x, 22.x]へ変更
+
+### `8709ca0`
+- **Date:** 2026-08-13 05:56:19
+- **Commit Message:** [fix] CIおよびReleaseワークフローのLinuxクリップボード環境対策
+- **Constraint:** ヘッドレスLinux CI環境における全テストケースの合格保証
+- **Rejected:** xclip/xvfbの未定義および無防備なクリップボード例外によるビルド失敗
+- **Chosen:** ci.yml/release.ymlへのxclip・xvfb依存追加、xvfb-run経由でのテスト実行、test_runnerへの環境ガード実装
+
+### `7a1a246`
+- **Date:** 2026-08-13 05:43:29
+- **Commit Message:** [docs] Update main branch git log description for README
+- **Description:** None
+
 ### `61275d5`
 - **Date:** 2026-08-13 05:43:09
 - **Commit Message:** [docs] README.mdおよびRelease自動化ワークフローの作成

@@ -14,7 +14,7 @@ imports:
 ## Overview
 Comprehensive test runner for CSV, HTML, TSV, Markdown, --no-header, and pipeline conversions.
 
-### (Function) `runTests` (L44-492)
+### (Function) `runTests` (L44-494)
 - **Description**: Executes all test suites and logs results.
 - **Arguments**: None
 - **Return Value**: `Promise<void>`

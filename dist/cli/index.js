@@ -77,7 +77,7 @@ export async function runCLI(args) {
         .option('-o, --output <path>', t('cli.opt_output'))
         .option('-f, --input-format <format>', t('cli.opt_input_format'))
         .option('-t, --output-format <format>', t('cli.opt_output_format'))
-        .option('-tbl, --table-name <name>', t('cli.opt_table_name'))
+        .option('--table-name <name>', t('cli.opt_table_name'))
         .option('-e, --encoding <name>', t('cli.opt_encoding'))
         .option('-c, --clip', t('cli.opt_clip'))
         .option('--stream', t('cli.opt_stream'))

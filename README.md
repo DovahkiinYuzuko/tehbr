@@ -82,7 +82,7 @@ tehbr -c -t markdown
 | `-o, --output <path>` | 出力ファイルの保存先パス（省略時は標準出力） |
 | `-f, --input-format <format>` | 入力フォーマット (`csv`, `tsv`, `markdown`, `html`, `json`) |
 | `-t, --output-format <format>` | 出力フォーマット (`markdown`, `html`, `csv`, `tsv`, `json`, `sql`, `ir`) |
-| `-tbl, --table-name <name>` | SQL 出力時のテーブル名 |
+| `--table-name <name>` | SQL 出力時のテーブル名 |
 | `-e, --encoding <name>` | 入力テキストの文字エンコーディング |
 | `-c, --clip` | クリップボードの読み込み（入力省略時）および書き込みを有効化 |
 | `--stream` | 省メモリ・高速ストリーミング処理モード（Markdown/HTML 指定時はバッチ処理へフォールバック） |
@@ -170,7 +170,7 @@ tehbr -c -t markdown
 | `-o, --output <path>` | Output file path (defaults to stdout) |
 | `-f, --input-format <format>` | Input format (`csv`, `tsv`, `markdown`, `html`, `json`) |
 | `-t, --output-format <format>` | Output format (`markdown`, `html`, `csv`, `tsv`, `json`, `sql`, `ir`) |
-| `-tbl, --table-name <name>` | Table name for SQL generation |
+| `--table-name <name>` | Table name for SQL generation |
 | `-e, --encoding <name>` | Input text character encoding |
 | `-c, --clip` | Enable reading from clipboard (when input omitted) and writing to clipboard |
 | `--stream` | Enable low-memory streaming pipeline (falls back to batch mode for Markdown/HTML) |

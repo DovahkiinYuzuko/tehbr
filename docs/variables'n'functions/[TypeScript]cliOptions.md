@@ -22,7 +22,7 @@ CLI argument parsing and pipeline runner using Commander.
 - **Return Value**: `string | null`
 
 ### (Function) `runCLI`
-- **Description**: Parses CLI arguments and executes direct conversion or interactive mode.
+- **Description**: Parses CLI arguments using Commander (including `--table-name`) and executes direct conversion or interactive mode.
 - **Arguments**:
   - `args: string[]`: Command line arguments array.
 - **Return Value**: `Promise<void>`

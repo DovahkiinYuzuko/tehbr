@@ -1,6 +1,6 @@
 {
   "name": "@yuzuko_underson/tehbr",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Table format conversion CLI tool",
   "type": "module",
   "main": "dist/index.js",
